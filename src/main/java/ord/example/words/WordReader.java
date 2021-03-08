@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 /**
@@ -18,6 +19,11 @@ import java.util.stream.Stream;
  */
 public class WordReader {
     private Stream<String> tokens;
+    private ExecutorService executorService;
+
+    public WordReader(ExecutorService executorService) {
+        this.executorService = executorService;
+    }
 
     //TODO main in APplication class
 
