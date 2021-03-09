@@ -1,4 +1,4 @@
-Word count = 6
+Word count = 7
 Average word length = 4.556
 Number of words of length 3 is 1
 Number of words of length 4 is 1

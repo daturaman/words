@@ -30,7 +30,7 @@ public class WordReaderTest {
 
     @ParameterizedTest
     @MethodSource("testFiles")
-    void read(String testFile, String expectedFile) throws URISyntaxException, IOException {
+    void read(String testFile, String expectedFile) throws URISyntaxException, IOException, InterruptedException {
         final WordReader wordReader = new WordReader(Executors.newCachedThreadPool());
         File file = new File(getClass().getResource(testFile).toURI());
         final String actualOutput = wordReader.read(file);
