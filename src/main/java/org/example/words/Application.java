@@ -2,6 +2,7 @@ package org.example.words;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,7 +25,7 @@ public class Application {
                 final File file = new File(filePath);
                 System.out.println(wordReaderService.read(file));
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | ExecutionException e) {
             System.err.println("An error occurred: " + e.getMessage());
         }
         executorService.shutdown();

@@ -35,8 +35,6 @@ public class WordReaderService {
         this.executorService = executorService;
     }
 
-    //TODO main in APplication class
-
     /**
      * Reads a plain text file and outputs a summary of the word statistics.
      *
@@ -45,7 +43,7 @@ public class WordReaderService {
      * @throws IOException there was an error reading the file.
      * @throws InterruptedException an error occurred during the data gathering.
      */
-    public String read(File file) throws IOException, InterruptedException {
+    public String read(File file) throws IOException, InterruptedException, ExecutionException {
         StringBuilder output = new StringBuilder();
         try (Scanner scanner = new Scanner(file)) {
             tokens = scanner.tokens()
@@ -59,8 +57,6 @@ public class WordReaderService {
             for (Future<String> result : results) {
                 output.append(result.get());
             }
-        } catch (ExecutionException e) {
-            e.printStackTrace();//FIXME
         }
         return output.toString();
     }
@@ -98,7 +94,7 @@ public class WordReaderService {
 
             TreeMap<Integer, List<String>> map = new TreeMap<>(Comparator.reverseOrder());
             for (Map.Entry<Integer, List<String>> entry : wordLengths.entrySet()) {
-                map.computeIfAbsent(entry.getValue().size(), occurence -> new ArrayList<>(entry.getKey()));
+                map.computeIfAbsent(entry.getValue().size(), key -> new ArrayList<>(entry.getKey()));
                 map.computeIfPresent(entry.getValue().size(), (integer, integers) -> {
                     integers.add(Integer.toString(entry.getKey()));
                     return integers;
