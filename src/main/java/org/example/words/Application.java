@@ -20,7 +20,7 @@ public class Application {
         final WordReaderService wordReaderService = new WordReaderService(executorService);
         try {
             for (String filePath : filePaths) {
-                System.out.println(filePath);
+                System.out.println("\nWords statistics for " + filePath + "\n");
                 final File file = new File(filePath);
                 System.out.println(wordReaderService.read(file));
             }

@@ -120,10 +120,10 @@ public class WordReaderService {
 
     private String removeLeadingAndTrailingExcludedChars(String word) {
         StringBuilder stringBuilder = new StringBuilder(word);
-        if (EXCLUDED_CHARS.contains(valueOf(word.charAt(0)))) {
+        if (EXCLUDED_CHARS.contains(valueOf(word.charAt(0))) && word.length() > 1) {
             stringBuilder.deleteCharAt(0);
         }
-        if (EXCLUDED_CHARS.contains(valueOf(word.charAt(word.length() - 1)))) {
+        if (EXCLUDED_CHARS.contains(valueOf(word.charAt(word.length() - 1))) && word.length() > 1) {
             stringBuilder.deleteCharAt(word.length() - 1);
         }
         return stringBuilder.toString();
