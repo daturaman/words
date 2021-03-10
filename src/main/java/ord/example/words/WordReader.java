@@ -19,6 +19,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.function.Predicate;
 
 /**
  * Reads a file and generates a summary of word statistics.
@@ -26,6 +27,7 @@ import java.util.concurrent.Future;
 public class WordReader {
 
     private static final String EXCLUDED_CHARS = "{}[]<>\"':;,!?.";
+    private static final String WORD_FILTER_REGEX = "[\\w&@\"'£$%\\-+!?][a-zA-Z0-9]*[\\w\"'.!?+-\\]{1}\\[a-zA-Z0-9]*";
     private List<String> tokens;
     private final ExecutorService executorService;
 
@@ -35,14 +37,25 @@ public class WordReader {
 
     //TODO main in APplication class
 
+    /**
+     * Reads a plain text file and outputs a summary of the word statistics.
+     *
+     * @param file a plain text file.
+     * @return a summary of the word statistics.
+     * @throws IOException there was an error reading the file.
+     * @throws InterruptedException an error occurred during the data gathering.
+     */
     public String read(File file) throws IOException, InterruptedException {
         StringBuilder output = new StringBuilder();
         try (Scanner scanner = new Scanner(file)) {
-            tokens = scanner.tokens().filter(word -> !word.matches("\\*+")).collect(toList());
+            tokens = scanner.tokens()
+                            .map(this::removeLeadingAndTrailingExcludedChars)
+                            .filter(wordFilter())
+                            .collect(toList());
             final String wordCount = "Word count = " + tokens.size();
             output.append(wordCount);
             final List<Future<String>> results = executorService.invokeAll(
-                    List.of(getAverageWordLength(), getWordLengths(), getMostFrequentLengths2()));
+                    List.of(getAverageWordLength(), getWordLengths(), getMostFrequentLengths()));
             for (Future<String> result : results) {
                 output.append(result.get());
             }
@@ -52,11 +65,14 @@ public class WordReader {
         return output.toString();
     }
 
+    private Predicate<String> wordFilter() {
+        return word -> word.matches(WORD_FILTER_REGEX);
+    }
+
     private Callable<String> getAverageWordLength() {
         return () -> {
             final double averageWordLength = tokens
                     .stream()
-                    .map(this::removeLeadingAndTrailingExcludedChars)
                     .mapToInt(String::length)
                     .average()
                     .orElse(0);
@@ -76,7 +92,7 @@ public class WordReader {
         };
     }
 
-    private Callable<String> getMostFrequentLengths2() {
+    private Callable<String> getMostFrequentLengths() {
         return () -> {
             final Map<Integer, List<String>> wordLengths = mapLengthsToWords();
 
@@ -90,7 +106,8 @@ public class WordReader {
             }
             int maxFrequency = map.firstKey();
             String mostFrequentLengths = join(" & ", map.firstEntry().getValue());
-            return format("\nThe most frequently occurring word length is %d, for word lengths of %s", maxFrequency,
+            return format("\nThe most frequently occurring word length is %d, for word lengths of %s",
+                    maxFrequency,
                     mostFrequentLengths);
         };
     }
@@ -98,7 +115,6 @@ public class WordReader {
     private Map<Integer, List<String>> mapLengthsToWords() {
         return tokens
                 .stream()
-                .map(this::removeLeadingAndTrailingExcludedChars)
                 .collect(groupingBy(String::length));
     }
 

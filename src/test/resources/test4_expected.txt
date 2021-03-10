@@ -1,0 +1,6 @@
+Word count = 3
+Average word length = 6.000
+Number of words of length 3 is 1
+Number of words of length 6 is 1
+Number of words of length 9 is 1
+The most frequently occurring word length is 1, for word lengths of 3 & 6 & 9
