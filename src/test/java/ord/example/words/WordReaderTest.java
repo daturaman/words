@@ -47,7 +47,8 @@ public class WordReaderTest {
     private static Stream<Arguments> testFiles() {
         return Stream.of(
                 Arguments.of("/test1.txt", "/test1_expected.txt"),
-                Arguments.of("/test2.txt", "/test2_expected.txt")
+                Arguments.of("/test2.txt", "/test2_expected.txt"),
+                Arguments.of("/test3.txt", "/test3_expected.txt")
         );
 
     }

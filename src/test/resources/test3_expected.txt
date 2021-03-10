@@ -1,0 +1,6 @@
+Word count = 4
+Average word length = 5.000
+Number of words of length 4 is 1
+Number of words of length 5 is 2
+Number of words of length 6 is 1
+The most frequently occurring word length is 2, for word lengths of 5
