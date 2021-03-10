@@ -1,0 +1,7 @@
+Word count = 6
+Average word length = 3.667
+Number of words of length 2 is 2
+Number of words of length 3 is 1
+Number of words of length 4 is 2
+Number of words of length 7 is 1
+The most frequently occurring word length is 2, for word lengths of 2 & 4

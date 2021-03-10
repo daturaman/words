@@ -1,4 +1,4 @@
-package ord.example.words;
+package org.example.words;
 
 import static java.lang.String.format;
 import static java.lang.String.join;
@@ -24,14 +24,14 @@ import java.util.function.Predicate;
 /**
  * Reads a file and generates a summary of word statistics.
  */
-public class WordReader {
+public class WordReaderService {
 
     private static final String EXCLUDED_CHARS = "{}[]<>\"':;,!?.";
     private static final String WORD_FILTER_REGEX = "[\\w&@\"'£$%\\-+!?][a-zA-Z0-9]*[\\w\"'.!?+-\\]{1}\\[a-zA-Z0-9]*";
     private List<String> tokens;
     private final ExecutorService executorService;
 
-    public WordReader(ExecutorService executorService) {
+    public WordReaderService(ExecutorService executorService) {
         this.executorService = executorService;
     }
 

@@ -1,4 +1,4 @@
-package ord.example.words;
+package org.example.words;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class WordReaderTest {
+public class WordReaderServiceTest {
 
 
     @BeforeEach
@@ -31,9 +31,9 @@ public class WordReaderTest {
     @ParameterizedTest
     @MethodSource("testFiles")
     void read(String testFile, String expectedFile) throws URISyntaxException, IOException, InterruptedException {
-        final WordReader wordReader = new WordReader(Executors.newCachedThreadPool());
+        final WordReaderService wordReaderService = new WordReaderService(Executors.newCachedThreadPool());
         File file = new File(getClass().getResource(testFile).toURI());
-        final String actualOutput = wordReader.read(file);
+        final String actualOutput = wordReaderService.read(file);
         final String expectedOutput = expectedFile(expectedFile);
         assertEquals(expectedOutput, actualOutput);
     }
@@ -49,7 +49,8 @@ public class WordReaderTest {
                 Arguments.of("/test1.txt", "/test1_expected.txt"),
                 Arguments.of("/test2.txt", "/test2_expected.txt"),
                 Arguments.of("/test3.txt", "/test3_expected.txt"),
-                Arguments.of("/test4.txt", "/test4_expected.txt")
+                Arguments.of("/test4.txt", "/test4_expected.txt"),
+                Arguments.of("/test5.txt", "/test5_expected.txt")
         );
 
     }
